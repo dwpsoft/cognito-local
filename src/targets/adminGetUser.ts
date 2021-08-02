@@ -1,5 +1,5 @@
 import { Services } from "../services";
-import { NotAuthorizedError } from "../errors";
+import { CognitoError, NotAuthorizedError, UserNotFoundError } from "../errors";
 
 interface Input {
   UserPoolId: string;
@@ -20,9 +20,11 @@ export const AdminGetUser = ({
   const userPool = await cognitoClient.getUserPool(UserPoolId);
   const user = await userPool.getUserByUsername(Username);
   if (!user) {
-    throw new NotAuthorizedError();
+    throw new UserNotFoundError();
   }
   return {
+    Username: user.Username,
+    Enabled: true,
     UserStatus: user.UserStatus,
     UserAttributes: user.Attributes,
   };

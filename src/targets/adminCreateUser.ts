@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import { Services } from "../services";
 import { attributesInclude, User } from "../services/userPoolClient";
 
@@ -26,11 +26,11 @@ export const AdminCreateUser = ({
 
   const attributes = attributesInclude("sub", UserAttributes)
     ? UserAttributes
-    : [{ Name: "sub", Value: uuid.v4() }, ...UserAttributes];
+    : [{ Name: "sub", Value: uuidv4() }, ...UserAttributes];
 
   const user: User = {
     Username,
-    Password: TemporaryPassword,
+    Password: TemporaryPassword ?? 'password',
     Attributes: attributes,
     Enabled: true,
     UserStatus: "CONFIRMED",
