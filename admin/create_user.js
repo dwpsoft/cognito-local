@@ -19,6 +19,22 @@ cognito.adminCreateUser({
     {
         Name: 'profile',
         Value: 'admin' 
+    },
+    {
+        Name: 'nickname',
+        Value: 'USR' 
+    },
+    {
+        Name: 'email',
+        Value: 'user@local.com' 
+    },
+    {
+        Name: 'given_name',
+        Value: 'User' 
+    },
+    {
+        Name: 'family_name',
+        Value: 'Local' 
     }],
     TemporaryPassword: 'password'
 }, function(err, data) {
