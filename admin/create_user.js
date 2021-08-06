@@ -19,28 +19,22 @@ cognito.adminCreateUser({
     UserAttributes: [{
         Name: 'name',
         Value: 'hdc' 
-    },
-    {
+    }, {
         Name: 'profile',
         Value: 'admin' 
-    },
-    {
+    }, {
         Name: 'nickname',
         Value: 'USR' 
-    },
-    {
+    }, {
         Name: 'email',
         Value: 'user@local.com' 
-    },
-    {
+    }, {
         Name: 'given_name',
         Value: 'User' 
-    },
-    {
+    }, {
         Name: 'family_name',
         Value: 'Local' 
-    },
-    {
+    }, {
         Name: 'locale',
         Value: 'dentist' 
     }],
