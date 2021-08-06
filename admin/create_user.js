@@ -39,6 +39,10 @@ cognito.adminCreateUser({
     {
         Name: 'family_name',
         Value: 'Local' 
+    },
+    {
+        Name: 'locale',
+        Value: 'dentist' 
     }],
     TemporaryPassword: 'password'
 }, function(err, data) {
