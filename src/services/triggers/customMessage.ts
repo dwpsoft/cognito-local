@@ -23,48 +23,50 @@ export type CustomMessageTrigger = (params: {
   clientId: string;
   username: string;
   code: string;
-  userAttributes: readonly { Name: string; Value: string }[];
+  userAttributes: { Name: string; Value: string }[];
 }) => Promise<CustomMessageResponse | null>;
 
-export const CustomMessage = (
-  {
-    lambda,
-    cognitoClient,
-  }: {
-    lambda: Lambda;
-    cognitoClient: CognitoClient;
-  },
-  logger: Logger
-): CustomMessageTrigger => async ({
-  clientId,
-  code,
-  source,
-  userAttributes,
-  username,
-  userPoolId,
-}): Promise<CustomMessageResponse | null> => {
-  const userPool = await cognitoClient.getUserPoolForClientId(clientId);
-  if (!userPool) {
-    throw new ResourceNotFoundError();
-  }
+export const CustomMessage =
+  (
+    {
+      lambda,
+      cognitoClient,
+    }: {
+      lambda: Lambda;
+      cognitoClient: CognitoClient;
+    },
+    logger: Logger
+  ): CustomMessageTrigger =>
+  async ({
+    clientId,
+    code,
+    source,
+    userAttributes,
+    username,
+    userPoolId,
+  }): Promise<CustomMessageResponse | null> => {
+    const userPool = await cognitoClient.getUserPoolForClientId(clientId);
+    if (!userPool) {
+      throw new ResourceNotFoundError();
+    }
 
-  try {
-    const response = await lambda.invoke("CustomMessage", {
-      clientId,
-      code,
-      triggerSource: source,
-      userAttributes: attributesToRecord(userAttributes),
-      username,
-      userPoolId,
-    });
+    try {
+      const response = await lambda.invoke("CustomMessage", {
+        clientId,
+        code,
+        triggerSource: source,
+        userAttributes: attributesToRecord(userAttributes),
+        username,
+        userPoolId,
+      });
 
-    return {
-      emailMessage: response.emailMessage,
-      emailSubject: response.emailSubject,
-      smsMessage: response.smsMessage,
-    };
-  } catch (ex) {
-    logger.error(ex);
-    return null;
-  }
-};
+      return {
+        emailMessage: response.emailMessage,
+        emailSubject: response.emailSubject,
+        smsMessage: response.smsMessage,
+      };
+    } catch (ex) {
+      logger.error(ex);
+      return null;
+    }
+  };

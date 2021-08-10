@@ -61,6 +61,7 @@ export async function generateTokens(
         email: attributeValue("email", user.Attributes),
         name: attributeValue("name", user.Attributes),
         profile: attributeValue("profile", user.Attributes),
+        nickname: attributeValue("nickname", user.Attributes),
       },
       PrivateKey.pem,
       {

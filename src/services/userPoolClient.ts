@@ -15,21 +15,21 @@ export interface MFAOption {
 export const attributesIncludeMatch = (
   attributeName: string,
   attributeValue: string,
-  attributes: readonly UserAttribute[]
+  attributes: UserAttribute[]
 ) =>
   !!(attributes || []).find(
     (x) => x.Name === attributeName && x.Value === attributeValue
   );
 export const attributesInclude = (
   attributeName: string,
-  attributes: readonly UserAttribute[]
+  attributes: UserAttribute[]
 ) => !!(attributes || []).find((x) => x.Name === attributeName);
 export const attributeValue = (
   attributeName: string,
-  attributes: readonly UserAttribute[]
+  attributes: UserAttribute[]
 ) => (attributes || []).find((x) => x.Name === attributeName)?.Value;
 export const attributesToRecord = (
-  attributes: readonly UserAttribute[]
+  attributes: UserAttribute[]
 ): Record<string, string> =>
   (attributes || []).reduce(
     (acc, attr) => ({ ...acc, [attr.Name]: attr.Value }),
@@ -37,7 +37,7 @@ export const attributesToRecord = (
   );
 export const attributesFromRecord = (
   attributes: Record<string, string>
-): readonly UserAttribute[] =>
+): UserAttribute[] =>
   Object.entries(attributes).map(([Name, Value]) => ({ Name, Value }));
 
 export interface User {
@@ -46,7 +46,7 @@ export interface User {
   UserLastModifiedDate: number;
   Enabled: boolean;
   UserStatus: "CONFIRMED" | "UNCONFIRMED" | "RESET_REQUIRED";
-  Attributes: readonly UserAttribute[];
+  Attributes: UserAttribute[];
   MFAOptions?: readonly MFAOption[];
 
   // extra attributes for Cognito Local
@@ -139,9 +139,8 @@ export class UserPoolClientService implements UserPoolClient {
     this.logger.debug("getUserByUsername", username);
 
     const aliasEmailEnabled = this.config.UsernameAttributes?.includes("email");
-    const aliasPhoneNumberEnabled = this.config.UsernameAttributes?.includes(
-      "phone_number"
-    );
+    const aliasPhoneNumberEnabled =
+      this.config.UsernameAttributes?.includes("phone_number");
 
     const userByUsername = await this.dataStore.get<User>(["Users", username]);
     if (userByUsername) {
